@@ -73,7 +73,7 @@ void *recv_msg(void *arg)   // read thread main
             printf("服务器关闭连接,退出\n");
 //            break;
         } else if (str_len == -1) {
-            printf("Fin\n");
+            printf("error\n");
             return (void *) -1;
         }
         name_msg[str_len] = 0;

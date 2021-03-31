@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     memset(&serv_adr, 0, sizeof(serv_adr));
     serv_adr.sin_family = AF_INET;
     serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serv_adr.sin_port = htons(atoi("8080"));
+    serv_adr.sin_port = htons(atoi("8081"));
 
     Bind(serv_sock, (struct sockaddr *) &serv_adr, sizeof(serv_adr));
     Listen(serv_sock, 5);
@@ -63,12 +63,14 @@ int main(int argc, char *argv[]) {
                 } else    // read message!
                 {
                     str_len = read(i, buf, BUF_SIZE);
+                    printf("received len: %d ", str_len);
                     if (str_len == 0)    // close request!
                     {
                         FD_CLR(i, &reads);
                         close(i);
                         printf("closed client: %d \n", i);
                     } else {
+                        printf("%s\n", buf);
                         write(i, buf, str_len);    // echo!
                     }
                 }

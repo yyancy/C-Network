@@ -19,3 +19,6 @@ target_link_libraries(echo_pollserv udp)
 
 add_executable(echo_client echo_client.c)
 target_link_libraries(echo_client udp)
+
+add_executable(pingpong_client2 pingpong_client2.c)
+target_link_libraries(pingpong_client2 udp)

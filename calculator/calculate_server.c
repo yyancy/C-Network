@@ -54,12 +54,12 @@ int server() {
 
     server_fd = Socket(AF_INET, SOCK_STREAM, 0);
 
-    Bind(server_fd, (SA) &server_sock, sizeof(server_sock));
+    Bind(server_fd, (SA *) &server_sock, sizeof(server_sock));
 
     Listen(server_fd, 4);
 
     client_sock_len = sizeof(client_sock);
-    client_fd = Accept(server_fd, (SA) &client_sock, &client_sock_len);
+    client_fd = Accept(server_fd, (SA *) &client_sock, &client_sock_len);
 
     for (int i = 0; i < 5; ++i) {
         int body[100];
@@ -84,6 +84,5 @@ int server() {
 int main() {
 
     server();
-
     return 0;
 }

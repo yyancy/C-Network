@@ -13,6 +13,7 @@ void error_handling(char *string) {
 int Socket(int __domain, int __type, int __protocol) {
     int sock;
     if ((sock = socket(__domain, __type, __protocol)) == -1) {
+        printf("错误信息： %s\n",strerror(errno));
         error_handling("socket() error");
     }
     return sock;
@@ -35,7 +36,7 @@ int Listen(int __fd, int __n) {
 int Accept(int __fd, __SOCKADDR_ARG __addr,
            socklen_t *__restrict __addr_len) {
     int client_fd;
-    if ((client_fd = accept(__fd, (SA) &__addr, __addr_len)) == -1) {
+    if ((client_fd = accept(__fd, (SA *) &__addr, __addr_len)) == -1) {
         error_handling("accept() error");
     }
     return client_fd;

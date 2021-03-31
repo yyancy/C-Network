@@ -4,14 +4,11 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <sys/time.h>
 #include <sys/select.h>
 #include <poll.h>
-#include <limits.h>
 #include <errno.h>
 #include "lib/udp.h"
 
-#include <sys/epoll.h>
 
 #define BUF_SIZE 4
 #define EPOLL_SIZE 10

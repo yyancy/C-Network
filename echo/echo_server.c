@@ -22,20 +22,19 @@ int server() {
     server_sock.sin_port = htons(8080);
 
     server_fd = Socket(AF_INET, SOCK_STREAM, 0);
-    Bind(server_fd, (SA) &server_sock, sizeof(server_sock));
+    Bind(server_fd, (SA *) &server_sock, sizeof(server_sock));
     Listen(server_fd, 4);
 
     for (int i = 0; i < 5; ++i) {
         clien_sock_len = sizeof(client_sock);
-        client_fd = Accept(server_fd, (SA) &client_sock, &clien_sock_len);
+        client_fd = Accept(server_fd, (SA *) &client_sock, &clien_sock_len);
         ssize_t n;
         while ((n = read(client_fd, buf, sizeof(buf))) > 0) {
             printf("%ld %s \n", n, buf);
             write(client_fd, buf, n);
         }
+        close(client_fd);
     }
-
-    close(client_fd);
     close(server_fd);
 
     return 0;

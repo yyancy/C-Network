@@ -22,29 +22,27 @@ int main() {
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    serv_addr.sin_port = htons(9527);
-    Signal(SIGCHLD, sig_chld);
+    serv_addr.sin_port = htons(8080);
+
     Connect(sock, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+    fgets(buf, sizeof(buf), stdin); //不处理\n
+    printf("your enter string : %s", buf);
+    str_len = strlen(buf);
+
     for (;;) {
-        fgets(buf, sizeof(buf), stdin); //不处理\n
-        printf("str: %s", buf);
-        str_len = strlen(buf);
-        if (!strcmp(buf, "q\n") || !strcmp(buf, "Q\n"))
-            break;
 
         if (write(sock, buf, strlen(buf)) == EOF) {
             error_handling("write() error");
         }
+        memset(buf, 0, sizeof(buf));
 
         // 1234567890
         ssize_t n = 0;
-        memset(buf, 0, sizeof(buf));
-
         while (n < str_len) {
             int t;
-            fprintf(stderr, "str_len %d \n", str_len);
             t = Read(sock, &buf[n], str_len - n);
             printf("%d %s\n", t, buf);
+            sleep(1);
             n += t;
         }
         buf[n] = 0;

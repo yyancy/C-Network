@@ -101,7 +101,7 @@ void *handle_server(void *arg) {
         int clnt_adr_sz;
         pthread_t t_id;
         clnt_adr_sz = sizeof(clnt_adr);
-        clnt_sock = Accept(server_sock, (SA) &clnt_adr, &clnt_adr_sz);
+        clnt_sock = Accept(server_sock, (SA *) &clnt_adr, &clnt_adr_sz);
 
         pthread_mutex_lock(&mutx);
         clnt_socks[clnt_cnt++] = clnt_sock;
