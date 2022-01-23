@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
         int nready = poll(client, maxi + 1, -1);
         if (client[0].revents & POLLRDNORM) { // new client connection
             clilen = sizeof(clnt_adr);
-            clnt_sock = Accept(listenfd, (SA) &clnt_adr, &clilen);
+            clnt_sock = Accept(listenfd, (SA*) &clnt_adr, &clilen);
             int i;
             for (i = 1; i < FOPEN_MAX; ++i) {
                 if (client[i].fd < 0) {
