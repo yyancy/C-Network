@@ -1,7 +1,43 @@
 #include <signal.h>
 #include <errno.h>
+#include <net/if.h>
+#include <sys/socket.h>
+#include <linux/if_packet.h>
+#include <sys/ioctl.h>
 #include    "ping.h"
 
+void bind_to_interface(int raw , char *device , int protocol) { 
+    struct sockaddr_ll sll;
+    struct ifreq ifr; bzero(&sll , sizeof(sll));
+    bzero(&ifr , sizeof(ifr)); 
+    strncpy((char *)ifr.ifr_name ,device , IFNAMSIZ); 
+    //copy device name to ifr 
+    if((ioctl(raw , SIOCGIFINDEX , &ifr)) == -1)
+    { 
+        perror("Unable to find interface index");
+        exit(-1); 
+    }
+
+//  if (setsockopt(raw, SOL_SOCKET, SO_BINDTODEVICE, (void *)&ifr, sizeof(ifr)) < 0)
+    if (setsockopt(raw, SOL_SOCKET, SO_BINDTODEVICE, ifr.ifr_name, sizeof(ifr.ifr_name)) < 0)
+
+  {
+    perror("Server-setsockopt() error for SO_BINDTODEVICE");
+    printf("%s\n", strerror(errno));
+    close(raw);
+    exit(-1);
+  }
+
+
+    sll.sll_family = pr->sasend->sa_family;
+    sll.sll_ifindex = ifr.ifr_ifindex; 
+    sll.sll_protocol = htons(protocol); 
+    if((bind(raw , ifr.ifr_name , sizeof(ifr.ifr_name))) ==-1)
+    {
+        perror("bind: ");
+        exit(-1);
+    }
+} 
 void
 readloop(void) {
     int size;
@@ -13,7 +49,8 @@ readloop(void) {
     struct timeval tval;
 
     sockfd = Socket(pr->sasend->sa_family, SOCK_RAW, pr->icmpproto);
-    setuid(getuid());        /* don't need special permissions any more */
+    bind_to_interface(sockfd, "wlo1", pr->icmpproto);
+    setuid(getuid()); /* don't need special permissions any more */
     if (pr->finit)
         (*pr->finit)();
 
