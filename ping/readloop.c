@@ -49,7 +49,8 @@ readloop(void) {
     struct timeval tval;
 
     sockfd = Socket(pr->sasend->sa_family, SOCK_RAW, pr->icmpproto);
-    bind_to_interface(sockfd, "wlo1", pr->icmpproto);
+    if (strlen(interface) > 0) // set interface
+      bind_to_interface(sockfd, interface, pr->icmpproto);
     setuid(getuid()); /* don't need special permissions any more */
     if (pr->finit)
         (*pr->finit)();

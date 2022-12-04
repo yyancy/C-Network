@@ -14,6 +14,8 @@ int nsent;                /* add 1 for each sendto() */
 pid_t pid;                /* our PID */
 int sockfd;
 int verbose;
+#define INTERFACE_SIZE 512
+char interface[INTERFACE_SIZE];
 
 /* function prototypes */
 void init_v6(void);

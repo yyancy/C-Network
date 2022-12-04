@@ -31,14 +31,23 @@ main(int argc, char **argv) {
     char *h;
 
     opterr = 0;        /* don't want getopt() writing to stderr */
-    while ((c = getopt(argc, argv, "v")) != -1) {
+    while ((c = getopt(argc, argv, "vI:")) != -1) {
         switch (c) {
             case 'v':
                 verbose++;
                 break;
+          case 'I':
+            bzero(&interface , sizeof(interface));
+            if (strlen(optarg)> INTERFACE_SIZE -1 ){
+              fprintf(stderr, "The interface too long to fill the buffer: %s\n", optarg);
+              exit(1);
+            }
 
+            strncpy((char *)interface ,optarg , strlen(optarg));
+            break;
             case '?':
                 fprintf(stderr, "unrecognized option: %c", c);
+                exit(1);
         }
     }
 
