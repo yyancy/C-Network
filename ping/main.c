@@ -38,7 +38,8 @@ main(int argc, char **argv) {
                 break;
           case 'I':
             bzero(&interface , sizeof(interface));
-            if (strlen(optarg)> INTERFACE_SIZE -1 ){
+            int len;
+            if ((len = strlen(optarg))> INTERFACE_SIZE -1 || len<=0){
               fprintf(stderr, "The interface too long to fill the buffer: %s\n", optarg);
               exit(1);
             }
@@ -46,7 +47,7 @@ main(int argc, char **argv) {
             strncpy((char *)interface ,optarg , strlen(optarg));
             break;
             case '?':
-                fprintf(stderr, "unrecognized option: %c", c);
+                fprintf(stderr, "unrecognized option: %s", opterr);
                 exit(1);
         }
     }
